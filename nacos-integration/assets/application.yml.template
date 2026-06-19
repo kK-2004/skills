@@ -1,0 +1,33 @@
+# Spring Boot 2.4+ application.yml — Nacos Config Template
+# Based on: nacosDemo/src/main/resources/application.yml
+# Usage: Copy into src/main/resources/application.yml and edit TODO fields.
+
+server:
+  port: 8080   # TODO: change port if needed
+
+spring:
+  application:
+    name: your-app-name        # TODO: change to your application name (used as Nacos Data ID prefix)
+
+  config:
+    import:
+      - nacos:${spring.application.name}.yaml   # loads config from Nacos Data ID: your-app-name.yaml
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848      # TODO: Nacos server address
+        file-extension: yaml                 # config file format: yaml / properties
+        group: DEFAULT_GROUP                 # Nacos config group
+        namespace: ""                        # TODO: namespace ID (empty = public namespace)
+        refresh-enabled: true                # enable dynamic config refresh
+        username: nacos                      # Nacos auth username (remove if auth disabled)
+        password: ${spring.cloud.nacos.password}   # use env variable or remove if auth disabled
+      discovery:
+        enabled: false                       # set true if using service discovery
+        register-enabled: false               # set true if you want this service registered
+
+# Logging (optional — reduce Nacos client log noise)
+logging:
+  level:
+    com.alibaba.nacos: WARN

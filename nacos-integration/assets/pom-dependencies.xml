@@ -1,0 +1,59 @@
+<!--
+  Nacos Integration - pom.xml Dependencies Template
+  Based on the nacosDemo project (Spring Boot 2.7.18 + Spring Cloud Alibaba 2021.0.5.0)
+
+  Copy the <dependencyManagement> block into <project> level,
+  then copy the <dependencies> blocks into <dependencies>.
+-->
+
+<!-- ==================== Step A: dependencyManagement (project level) ==================== -->
+<!--
+  Paste this inside <project> (same level as <dependencies>):
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>2021.0.5.0</version>   <!-- Spring Boot 2.7.x -->
+        <!-- For Spring Boot 3.2.x use: 2023.0.1.0 -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+-->
+
+
+<!-- ==================== Step B: dependencies (inside <dependencies>) ==================== -->
+
+<!-- Web (already present in most projects) -->
+<!--
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+-->
+
+<!-- Nacos Config (REQUIRED) -->
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+    <!-- version managed by BOM above; do NOT specify version here -->
+</dependency>
+
+<!-- Nacos Discovery (OPTIONAL — only if you need service registration) -->
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    <!-- version managed by BOM above -->
+</dependency>
+
+<!-- Nacos Client (OPTIONAL — BOM manages it transitively, add only if you need a specific version) -->
+<!--
+<dependency>
+    <groupId>com.alibaba.nacos</groupId>
+    <artifactId>nacos-client</artifactId>
+    <version>2.3.2</version>
+</dependency>
+-->

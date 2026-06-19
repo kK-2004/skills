@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLM Streaming Response"
+  short_description: "Build consistent LLM streaming UIs"
+  default_prompt: "Use $llm-streaming-response to add a front-end and back-end LLM streaming response flow."
