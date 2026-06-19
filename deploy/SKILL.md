@@ -372,6 +372,9 @@ jobs:
       IMAGE_VER_TAG: ${{ github.run_number }}   # 构建号标签（递增），历史版本保留用
       IMAGE_TAR: {app_name}.tar.gz
       KEEP_VERSIONS: "5"                 # 保留最近 N 个构建号镜像
+      # ⚠️ 注意：if 条件里不能直接引用 secrets 上下文，必须先经 job 级 env 中转
+      # （step 的 env 在 if 求值时还未生效，所以必须放 job 级）
+      NEED_DOCKER_MIRROR: ${{ secrets.DOCKER_MIRROR_URL != '' }}
 
     steps:
       - name: Checkout code
@@ -381,13 +384,15 @@ jobs:
 
       # 国内服务器：配置 Docker 镜像加速
       - name: Configure Docker registry mirror
-        if: ${{ secrets.DOCKER_MIRROR_URL != '' }}
+        if: ${{ env.NEED_DOCKER_MIRROR == 'true' }}
+        env:
+          DOCKER_MIRROR_URL: ${{ secrets.DOCKER_MIRROR_URL }}
         run: |
           set -euo pipefail
           sudo mkdir -p /etc/docker
           sudo tee /etc/docker/daemon.json > /dev/null <<EOF
           {
-            "registry-mirrors": ["${{ secrets.DOCKER_MIRROR_URL }}"],
+            "registry-mirrors": ["$DOCKER_MIRROR_URL"],
             "max-concurrent-downloads": 10,
             "max-concurrent-uploads": 5
           }
@@ -646,6 +651,8 @@ docker compose -f docker-compose.prod.yml --env-file .env up -d --no-build
 | 日志写入 403 | 容器内日志目录无权限 | bind mount `./logs` + 服务器 `mkdir logs && chmod 777` |
 | healthcheck 失败 | 没有 health 端点 | 确认有 `/health` 或 `/api/status` 路由 |
 | 外部网络 DB 连不上 | compose 重建了 DB 服务 | 复用既有 `external: true` 网络，不重建 DB |
+| workflow 报 `Unrecognized named-value: 'secrets'` | `if:` 条件里直接用了 `${{ secrets.X }}`（GitHub 禁止 if 访问 secrets 上下文） | 把 secret 先赋给 **job 级** `env`，`if` 改判 `env.X`（step 级 env 在 if 求值时还没生效，必须 job 级） |
+| 加速步骤被静默跳过 | 判断变量定义在 step 自己的 `env:` 里，而 `if` 比 step env 先求值 | 判断变量必须放在 **job 级** `env:` |
 
 ## 扩展：添加反向代理（Caddy）
 
