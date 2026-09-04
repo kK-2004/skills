@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fixed Scroll Layout"
+  short_description: "固定容器高度并实现可靠的内部滚动布局"
+  default_prompt: "Use $fixed-scroll-layout to keep this container fixed-height while its content scrolls internally."

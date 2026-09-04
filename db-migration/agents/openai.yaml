@@ -1,0 +1,4 @@
+interface:
+  display_name: "DB Migration"
+  short_description: "Discover, validate, and safely manage database migrations"
+  default_prompt: "Use $db-migration to discover this project's migration mechanism, add reliable project-specific validation if missing, and safely create the correct next version."
