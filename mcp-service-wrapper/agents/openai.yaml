@@ -1,0 +1,4 @@
+interface:
+  display_name: "MCP 业务服务封装"
+  short_description: "将现有业务服务封装为 MCP，落地 OAuth 鉴权、工具权限与验证流程"
+  default_prompt: "使用 $mcp-service-wrapper 将当前业务服务封装为 MCP，复用现有鉴权和业务权限，并完成授权边界验证。"
