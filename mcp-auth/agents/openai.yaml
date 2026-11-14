@@ -1,0 +1,4 @@
+interface:
+  display_name: "MCP OAuth 认证"
+  short_description: "为远程 MCP 落地自建 OAuth（DCR + PKCE + 不透明 token + 撤销）与 Bearer 资源链"
+  default_prompt: "使用 $mcp-auth 为当前项目的远程 MCP Server 接入 OAuth 认证，并按验证清单完成测试。"
